@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ConsumirServiceComponent } from './components/consumir-service/consumir-service.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [ConsumirServiceComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
