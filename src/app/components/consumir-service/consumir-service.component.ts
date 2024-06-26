@@ -27,7 +27,27 @@ export class ConsumirServiceComponent {
     insiro em uma variavel o observable, deixando o próprio angular
     resgatar os dados e inserir eles no html usando o | async
   */
- listItems$ = this.apiService.httpListItems$().pipe(take(1))
+  listItems$ = this.apiService.httpListItems$().pipe(take(1))
+
+  itemId: {id:string, title: string} | null = null
+
+  itemIdStatus = ''
+
+  searchItemId(id: string) {
+    console.log('busca DEFAULT chamada:')
+    this.apiService.httpItemID$(id).subscribe({
+      next: (value) => {
+        this.itemId = value
+      },
+      error: (error) => {
+        console.log(error.status, error.message)
+        this.itemIdStatus = 'item não encontrado: id inválido.'
+      },
+      complete: () => {
+        console.log('item foi achado')
+      }
+    })
+  }
 
 
 

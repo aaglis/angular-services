@@ -3,3 +3,22 @@
     <li>{{item.id}} - {{ item.title }}</li>
   }
 </ul>
+
+<div class="get-item-by-id">
+  <h2>Buscando Item Pelo Id(DEFAULT)</h2>
+
+  <label>
+    id do item:
+    <input type="text" #inputID (keydown.enter)="searchItemId(inputID.value)">
+  </label>
+
+  <button (click)="searchItemId(inputID.value)">Buscar</button>
+
+  <div class="result">
+    @if(itemId) {
+      <li>{{ itemId.id }} - {{ itemId.title}}</li>
+    } @else {
+      <p>{{ itemIdStatus }}</p>
+    }
+  </div>
+</div>
