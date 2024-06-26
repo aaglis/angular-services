@@ -1,1 +1,6 @@
-<p>consumir-service works!</p>
+<ul>
+  @for(item of listItems; track item) {
+    <li>{{item.id}} - {{ item.title }}</li>
+  }
+</ul>
+

@@ -13,10 +13,17 @@ export class ConsumirServiceComponent implements OnInit{
   //forma antiga:
   // constructor(private apiService$: ApiService) {}
   //forma nova:
-  private apiService$ = inject(ApiService)
+  private apiService = inject(ApiService)
+   listItems: Array<{id: string, title: string}> = []
 
   ngOnInit(): void {
-    console.log(this.apiService$.name)
+    this.apiService.httpListItems$().subscribe({
+      next: (next) => {
+        this.listItems = next
+      },
+      error: (error) => console.log(error),
+      complete: () => console.log('Observable listItems$ foi completado')
+    })
   }
 
 }
