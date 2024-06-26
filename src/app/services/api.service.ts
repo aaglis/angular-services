@@ -17,6 +17,7 @@ export class ApiService {
   private ulr = environment.apiUlr
 
   public httpListItems$(): Observable<Task[]> {
+    console.log('chamou API service DEFAULT')
     return this.http.get<Task[]>(this.ulr)
   }
 

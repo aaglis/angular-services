@@ -1,0 +1,26 @@
+@if(listItems(); as data) {
+  <ul>
+    @for(item of data; track item) {
+      <li>{{ item.id }} - {{ item.title}}</li>
+    }
+  </ul>
+
+  <div class="item-by-id">
+    <h2>Buscando Item Pelo ID(SIGNAL):</h2>
+
+    <label>
+      id do item:
+      <input type="text" #inputId (keydown.enter)="getIdItem(inputId.value)">
+    </label>
+    <button (click)="getIdItem(inputId.value)">Buscar</button>
+
+    <div class="result">
+      @if(getItemById(); as item) {
+        <li>{{ item.id}} - {{ item.title }}</li>
+      } @else {
+        <li> {{ statusItem }}</li>
+      }
+    </div>
+  </div>
+}
+
