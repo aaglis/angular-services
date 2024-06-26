@@ -1,6 +1,5 @@
 <ul>
-  @for(item of listItems; track item) {
+  @for(item of listItems$ | async; track item) {
     <li>{{item.id}} - {{ item.title }}</li>
   }
 </ul>
-
