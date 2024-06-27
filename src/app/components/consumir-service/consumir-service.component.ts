@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 
 @Component({
   selector: 'app-consumir-service',
@@ -29,23 +29,20 @@ export class ConsumirServiceComponent {
   */
   listItems$ = this.apiService.httpListItems$().pipe(take(1))
 
-  itemId: {id:string, title: string} | null = null
+  itemId$ = this.apiService.getItemId
+  itemId: {id: string, title: string} | null = null
 
-  itemIdStatus = ''
+  itemIsStatus$ = this.apiService.getItemIdStatus
+  itemIdStatus: string = ''
 
   searchItemId(id: string) {
     console.log('busca DEFAULT chamada:')
-    this.apiService.httpItemID$(id).subscribe({
-      next: (value) => {
-        this.itemId = value
-      },
-      error: (error) => {
-        console.log(error.status, error.message)
-        this.itemIdStatus = 'item não encontrado: id inválido.'
-      },
-      complete: () => {
-        console.log('item foi achado')
-      }
+    this.apiService.httpItemID$(id)
+    this.itemId$.subscribe(item => {
+      this.itemId = item
+    })
+    this.itemIsStatus$.subscribe(text => {
+      this.itemIdStatus = text
     })
   }
 
