@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
-import { Subscription, take } from 'rxjs';
+import { Observable, Subscription, startWith, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-consumir-service',
@@ -27,7 +27,15 @@ export class ConsumirServiceComponent {
     insiro em uma variavel o observable, deixando o próprio angular
     resgatar os dados e inserir eles no html usando o | async
   */
-  listItems$ = this.apiService.httpListItems$().pipe(take(1))
+  listItems$: Observable<{ id: string, title: string}[]>
+
+  constructor() {
+    // Inicializa a lista de itens e escuta as mudanças
+    this.listItems$ = this.apiService.getCreatedItem$.pipe(
+      startWith(null),
+      switchMap(() => this.apiService.httpListItems$())
+    )
+  }
 
   itemId$ = this.apiService.getItemId
   itemId: {id: string, title: string} | null = null
@@ -46,7 +54,10 @@ export class ConsumirServiceComponent {
     })
   }
 
-
+  postItem(title: string) {
+    console.log('criação DEFAULT chamada:')
+    this.apiService.httpPostItem(title)
+  }
 
  /*
     FORMA 2:
@@ -65,8 +76,4 @@ export class ConsumirServiceComponent {
     }
 
  */
-
-
-
-
 }

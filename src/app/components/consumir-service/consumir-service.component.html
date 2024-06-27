@@ -22,3 +22,15 @@
     }
   </div>
 </div>
+
+<div class="create-item">
+  <h2>Criando um Novo Item(DEFAULT)</h2>
+
+  <input
+    type="text"
+    #inputItemTitle
+    placeholder="titulo do novo item"
+    (keydown.enter)="postItem(inputItemTitle.value)"
+  >
+  <button (click)="postItem(inputItemTitle.value)">Criar</button>
+</div>

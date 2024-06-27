@@ -47,4 +47,22 @@ export class ApiService {
     })
   }
 
+  private createdItem$ = new Subject<Task | null>()
+  get getCreatedItem$() {
+    return this.createdItem$.asObservable()
+  }
+
+  public httpPostItem(title: string) {
+    console.log('chamou API service DEFAULT: criando novo item')
+    this.http.post<Task>(this.url, {title}).subscribe({
+      next: (item) => {
+        console.log(item)
+        this.createdItem$.next(item)
+      },
+      error: (error) => {
+        console.log(error)
+      }
+    })
+  }
+
 }
