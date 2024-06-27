@@ -18,9 +18,21 @@
       @if(getItemById(); as item) {
         <li>{{ item.id}} - {{ item.title }}</li>
       } @else {
-        <li> {{ statusItem }}</li>
+        <p>{{ statusItem }}</p>
       }
     </div>
+  </div>
+
+  <div class="create-item">
+    <h2>Criando um Novo Item(SIGNAL)</h2>
+
+    <input
+      type="text"
+      #inputItemTitle
+      placeholder="titulo do novo item"
+      (keydown.enter)="createItem(inputItemTitle.value)"
+    >
+    <button (click)="createItem(inputItemTitle.value)">Criar</button>
   </div>
 }
 

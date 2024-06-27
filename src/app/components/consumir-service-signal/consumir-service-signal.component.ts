@@ -33,4 +33,9 @@ export class ConsumirServiceSignalComponent {
       }
     })
   }
+
+  createItem(title: string) {
+    console.log('INICIADO: CRIAÇÃO DE UM NOVO ITEM')
+    this.apiServiceSignal.postItem(title)
+  }
 }

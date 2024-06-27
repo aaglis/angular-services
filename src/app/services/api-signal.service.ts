@@ -23,7 +23,7 @@ export class ApiSignalService {
   }
 
 	listItems$(): Observable<Task[]> {
-    console.log('chamou API service SIGNAL')
+    console.log('chamou API service SIGNAL: LIST ITEMS')
 		return this.http.get<Task[]>(this.url()).pipe(
 			take(1),
       tap((res) => this.setListItems.set(res))
@@ -45,4 +45,26 @@ export class ApiSignalService {
       tap((res) => this.setItemById.set(res))
 		)
 	}
+
+  private criatedItem = signal<Task | null>(null)
+  get getCriatedItem() {
+    return this.criatedItem.asReadonly()
+  }
+
+  postItem(title: string) {
+    console.log('chamou API service SIGNAL: criando novo item')
+    return this.http.post<Task>(this.url(), {title}).subscribe({
+      next: (item) => {
+        console.log(item)
+        this.criatedItem.set(item)
+        this.listItems$().subscribe()
+      },
+      error: (error) => {
+        console.log(error)
+      },
+      complete: () => {
+        console.log('item criado')
+      }
+    })
+  }
 }
