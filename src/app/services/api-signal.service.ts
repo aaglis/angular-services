@@ -85,4 +85,20 @@ export class ApiSignalService {
       complete: () => console.log('item atualizado com sucesso!')
     })
   }
+
+  private deletedItem = signal<Task | null>(null)
+  get getdeletedItem() {
+    return this.deletedItem.asReadonly()
+  }
+
+  deleteItem(id: string) {
+    console.log('chamou API service SIGNAL: deletando item')
+    return this.http.delete(`${this.url()}${id}`, {}).pipe(take(1)).subscribe({
+      error: (error) => console.log(error),
+      complete: () => {
+        this.listItems$().subscribe()
+      }
+    })
+  }
+
 }

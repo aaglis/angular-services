@@ -1,7 +1,7 @@
 @if(listItems(); as data) {
   <ul>
     @for(item of data; track item.id) {
-      <li>{{ item.id }} - {{ item.title}}</li>
+      <li>{{ item.id }} - {{ item.title}}</li><button (click)="deleteItem(item.id)">Deletar</button>
     }
   </ul>
 

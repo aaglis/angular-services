@@ -43,4 +43,9 @@ export class ConsumirServiceSignalComponent {
     console.log('INICIADO: ATUALIZAÇÃO DE UM ITEM EXITENTE')
     this.apiServiceSignal.updateItem(id, title)
   }
+
+  deleteItem(id: string) {
+    console.log('INICIADO: DELETAR UM ITEM EXISTENTE')
+    this.apiServiceSignal.deleteItem(id)
+  }
 }
