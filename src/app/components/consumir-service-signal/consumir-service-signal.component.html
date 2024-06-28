@@ -3,6 +3,12 @@
     @for(item of data; track item.id) {
       <li>{{ item.id }} - {{ item.title}}</li><button (click)="deleteItem(item.id)">Deletar</button>
     }
+
+    <div class="result">
+      @if(statusDeletedItem()) {
+        <p>{{statusDeletedItem()}}</p>
+      }
+    </div>
   </ul>
 
   <div class="item-by-id">
@@ -18,7 +24,7 @@
       @if(getItemById(); as item) {
         <li>{{ item.id}} - {{ item.title }}</li>
       } @else {
-        <p>{{ statusItem }}</p>
+        <p>{{ statusItem() }}</p>
       }
     </div>
   </div>
@@ -33,14 +39,27 @@
       (keydown.enter)="createItem(inputItemTitle.value)"
     >
     <button (click)="createItem(inputItemTitle.value)">Criar</button>
+
+    <div class="result">
+      @if(statusCreatedItem()) {
+        <p>{{ statusCreatedItem() }}</p>
+      }
+    </div>
   </div>
 
   <div class="update-item">
     <h2>Atualizando um Item Existente</h2>
 
+
     <input type="text" #inputUpdateId placeholder="insira o id">
     <input type="text" #inputUpdateTitle placeholder="insira o novo titulo">
     <button (click)="updateItem(inputUpdateId.value, inputUpdateTitle.value)">Atualizar</button>
+
+    <div class="result">
+      @if(statusUpdatedItem()) {
+        <p>{{ statusUpdatedItem() }}</p>
+      }
+    </div>
   </div>
 }
 

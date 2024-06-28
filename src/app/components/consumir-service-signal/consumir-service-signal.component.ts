@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ApiSignalService } from '../../services/api-signal.service';
 
 @Component({
@@ -12,40 +12,53 @@ export class ConsumirServiceSignalComponent {
   private apiServiceSignal = inject(ApiSignalService)
 
   listItems = this.apiServiceSignal.getListItems
-  getItemById = this.apiServiceSignal.getItemById
 
-  statusItem = ''
+  // get item by ID and status(error)
+  getItemById = this.apiServiceSignal.getItemById
+  statusItem = signal<string | null>(null)
+
+  statusCreatedItem = signal<string | null>(null)
+
+  statusUpdatedItem = signal<string | null>(null)
+
+  statusDeletedItem = signal<string | null>(null)
 
   constructor() {
-    this.apiServiceSignal.listItems$().subscribe()
+    this.apiServiceSignal.listItems$()
   }
 
   getIdItem(id: string) {
+    if(!id) {
+      id = 'lerolero'
+    }
     console.log('INICIADO: BUSCA DE ITEM PELO ID')
     this.apiServiceSignal.getItemById$(id).subscribe({
-      error: (error) => {
-        console.log(error.status, error.message)
-        this.statusItem = 'Item não encontrado: ID inválido.'
-      },
-      complete: () => {
-        console.log('item foi achado')
-        this.statusItem = ''
-      }
+      next: () => this.statusItem.set(this.apiServiceSignal.getItemIdError()),
+      error: () => this.statusItem.set(this.apiServiceSignal.getItemIdError())
     })
   }
 
   createItem(title: string) {
     console.log('INICIADO: CRIAÇÃO DE UM NOVO ITEM')
-    this.apiServiceSignal.postItem(title)
+    this.apiServiceSignal.postItem(title).subscribe({
+      next: () => this.statusCreatedItem.set(this.apiServiceSignal.getCreateError()),
+      error: () => this.statusCreatedItem.set(this.apiServiceSignal.getCreateError())
+    })
   }
 
   updateItem(id: string, title: string) {
     console.log('INICIADO: ATUALIZAÇÃO DE UM ITEM EXITENTE')
-    this.apiServiceSignal.updateItem(id, title)
+    this.apiServiceSignal.updateItem(id, title).subscribe({
+      next: () => this.statusUpdatedItem.set(this.apiServiceSignal.getUpdatedItemError()),
+      error: () => this.statusUpdatedItem.set(this.apiServiceSignal.getUpdatedItemError())
+    })
   }
 
   deleteItem(id: string) {
     console.log('INICIADO: DELETAR UM ITEM EXISTENTE')
-    this.apiServiceSignal.deleteItem(id)
+    this.apiServiceSignal.deleteItem(id).subscribe({
+      next: () => this.statusDeletedItem.set(this.apiServiceSignal.getDeletedItemError()),
+      error: () => this.statusDeletedItem.set(this.apiServiceSignal.getDeletedItemError())
+    })
   }
 }

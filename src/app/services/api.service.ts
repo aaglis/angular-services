@@ -33,7 +33,7 @@ export class ApiService {
 
   public httpItemID$(id: string) {
     console.log('chamou API service DEFAULT: buscando item pelo id')
-    this.http.get<Task>(`${this.url}${id}`).subscribe({
+    this.http.get<Task>(`${this.url}/${id}`).subscribe({
       next: (item) => this.itemId$.next(item),
       error: (error) =>  {
         this.itemId$.next(null)
