@@ -38,4 +38,9 @@ export class ConsumirServiceSignalComponent {
     console.log('INICIADO: CRIAÇÃO DE UM NOVO ITEM')
     this.apiServiceSignal.postItem(title)
   }
+
+  updateItem(id: string, title: string) {
+    console.log('INICIADO: ATUALIZAÇÃO DE UM ITEM EXITENTE')
+    this.apiServiceSignal.updateItem(id, title)
+  }
 }

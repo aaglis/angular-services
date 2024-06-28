@@ -67,4 +67,22 @@ export class ApiSignalService {
       }
     })
   }
+
+  private updatedItem = signal<Task | null>(null)
+  get getUpdatedItem() {
+    return this.updatedItem.asReadonly()
+  }
+
+  updateItem(id: string, title: string) {
+    console.log('chamou API service SIGNAL: atualizando item')
+    return this.http.patch<Task>(`${this.url()}${id}`, { title }).subscribe({
+      next: (item) => {
+        console.log(item)
+        this.updatedItem.set(item)
+        this.listItems$().subscribe()
+      },
+      error: (error) => error,
+      complete: () => console.log('item atualizado com sucesso!')
+    })
+  }
 }

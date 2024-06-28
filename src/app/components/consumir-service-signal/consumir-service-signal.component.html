@@ -1,6 +1,6 @@
 @if(listItems(); as data) {
   <ul>
-    @for(item of data; track item) {
+    @for(item of data; track item.id) {
       <li>{{ item.id }} - {{ item.title}}</li>
     }
   </ul>
@@ -34,5 +34,15 @@
     >
     <button (click)="createItem(inputItemTitle.value)">Criar</button>
   </div>
+
+  <div class="update-item">
+    <h2>Atualizando um Item Existente</h2>
+
+    <input type="text" #inputUpdateId placeholder="insira o id">
+    <input type="text" #inputUpdateTitle placeholder="insira o novo titulo">
+    <button (click)="updateItem(inputUpdateId.value, inputUpdateTitle.value)">Atualizar</button>
+  </div>
 }
+
+
 
