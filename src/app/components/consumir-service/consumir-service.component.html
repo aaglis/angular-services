@@ -1,6 +1,6 @@
 <ul>
-  @for(item of listItems$ | async; track item) {
-    <li>{{item.id}} - {{ item.title }}</li>
+  @for(item of listItems$ | async; track item.id) {
+    <li>{{item.id}} - {{ item.title }}</li> <button (click)="deleteItem(item.id)">Excluir</button>
   }
 </ul>
 
@@ -33,4 +33,12 @@
     (keydown.enter)="postItem(inputItemTitle.value)"
   >
   <button (click)="postItem(inputItemTitle.value)">Criar</button>
+</div>
+
+<div class="update-item">
+  <h2>Atualizando um Item Existente(DEFAULT)</h2>
+
+  <input type="text" #inputUpdateId placeholder="insira o id">
+  <input type="text" #inputUpdateTitle placeholder="insira o novo titulo">
+  <button (click)="updateItem(inputUpdateId.value, inputUpdateTitle.value)">Atualizar</button>
 </div>

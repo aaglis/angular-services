@@ -31,7 +31,7 @@ export class ConsumirServiceComponent {
 
   constructor() {
     // Inicializa a lista de itens e escuta as mudanças
-    this.listItems$ = this.apiService.getCreatedItem$.pipe(
+    this.listItems$ = this.apiService.getlistUpdate.pipe(
       startWith(null),
       switchMap(() => this.apiService.httpListItems$())
     )
@@ -57,6 +57,16 @@ export class ConsumirServiceComponent {
   postItem(title: string) {
     console.log('criação DEFAULT chamada:')
     this.apiService.httpPostItem(title)
+  }
+
+  updateItem(id: string, title: string) {
+    console.log('update DEFAULT chamado:')
+    this.apiService.httpUpdateItem(id, title)
+  }
+
+  deleteItem(id: string) {
+    console.log('delete DEFAULT chamado:')
+    this.apiService.httpDeleteItem(id)
   }
 
  /*
