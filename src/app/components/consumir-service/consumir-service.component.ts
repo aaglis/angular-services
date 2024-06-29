@@ -41,7 +41,7 @@ export class ConsumirServiceComponent {
   itemId: {id: string, title: string} | null = null
 
   itemIsStatus$ = this.apiService.getItemIdStatus
-  itemIdStatus: string = ''
+  itemIdStatus: string | null = ''
 
   searchItemId(id: string) {
     console.log('busca DEFAULT chamada:')
@@ -49,19 +49,35 @@ export class ConsumirServiceComponent {
     this.itemId$.subscribe(item => {
       this.itemId = item
     })
-    this.itemIsStatus$.subscribe(text => {
-      this.itemIdStatus = text
+    this.itemIsStatus$.subscribe(statusError => {
+      this.itemIdStatus = statusError
     })
   }
+
+  createdItem$ = this.apiService.getCreatedItem
+  createdItem: {id: string, title: string} | null = null
+
+  createdItemStatus$ = this.apiService.getCreatedItemStatus
+  createdItemStatus: string | null = null
 
   postItem(title: string) {
     console.log('criação DEFAULT chamada:')
     this.apiService.httpPostItem(title)
+    this.createdItem$.subscribe(item => this.createdItem = item)
+    this.createdItemStatus$.subscribe(statusError => this.createdItemStatus = statusError)
   }
+
+  updatedItem$ = this.apiService.getUpdatedItem
+  updatedItem: {id: string, title: string} | null = null
+
+  updatedItemStatus$ = this.apiService.getUpdatedItemStatus
+  updatedItemStatus: string | null = null
 
   updateItem(id: string, title: string) {
     console.log('update DEFAULT chamado:')
     this.apiService.httpUpdateItem(id, title)
+    this.updatedItem$.subscribe(item => this.updatedItem = item)
+    this.updatedItemStatus$.subscribe(statusError => this.updatedItemStatus = statusError)
   }
 
   deleteItem(id: string) {

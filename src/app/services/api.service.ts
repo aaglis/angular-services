@@ -31,7 +31,7 @@ export class ApiService {
     return this.itemId$.asObservable()
   }
 
-  private itemIdStatus$ = new Subject<string>()
+  private itemIdStatus$ = new Subject<string | null>()
   get getItemIdStatus() {
     return this.itemIdStatus$.asObservable()
   }
@@ -39,14 +39,18 @@ export class ApiService {
   public httpItemID$(id: string) {
     console.log('chamou API service DEFAULT: buscando item pelo id')
 
+    if(!id){
+      id = 'lerolero'
+    }
+
     this.itemId$.next(null)
-    this.itemIdStatus$.next('')
+    this.itemIdStatus$.next(null)
 
     this.http.get<Task>(`${this.url}/${id}`).subscribe({
       next: (item) => this.itemId$.next(item),
       error: (error) =>  {
         console.log(error.status, error.message)
-        this.itemIdStatus$.next('Item não encontrado. ID inválido.')
+        this.itemIdStatus$.next(error.error.message)
       },
       complete: () => {
         console.log('item foi encontrado')
@@ -55,12 +59,21 @@ export class ApiService {
   }
 
   private createdItem$ = new Subject<Task | null>()
-  get getCreatedItem$() {
+  get getCreatedItem() {
     return this.createdItem$.asObservable()
+  }
+
+  private createdItemStatus$ = new Subject<string | null>()
+  get getCreatedItemStatus() {
+    return this.createdItemStatus$.asObservable()
   }
 
   public httpPostItem(title: string) {
     console.log('chamou API service DEFAULT: criando novo item')
+
+    this.createdItem$.next(null)
+    this.createdItemStatus$.next(null)
+
     this.http.post<Task>(this.url, {title}).subscribe({
       next: (item) => {
         console.log(item)
@@ -69,6 +82,7 @@ export class ApiService {
       },
       error: (error) => {
         console.log(error)
+        this.createdItemStatus$.next(error.error.message)
       }
     })
   }
@@ -78,14 +92,26 @@ export class ApiService {
     return this.updatedItem$.asObservable()
   }
 
+  private updatedItemStatus$ = new Subject<string | null>()
+  get getUpdatedItemStatus() {
+    return this.updatedItemStatus$.asObservable()
+  }
+
   public httpUpdateItem(id: string, title: string) {
     console.log('chamou API service DEFAULT: atualizando um item existente')
+
+    this.updatedItem$.next(null)
+    this.updatedItemStatus$.next(null)
+
     return this.http.patch<Task>(`${this.url}/${id}`, { title }).subscribe({
       next: (item) => {
         this.updatedItem$.next(item)
         this.listChanges$.next()
       },
-      error: (error) => console.log(error),
+      error: (error) => {
+        console.log(error)
+        this.updatedItemStatus$.next(error.error.message)
+      },
       complete: () => console.log('item atualizado com sucesso!')
     })
   }

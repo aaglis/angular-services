@@ -17,8 +17,8 @@
   <div class="result">
     @if(itemId) {
       <li>{{ itemId.id }} - {{ itemId.title}}</li>
-    } @else {
-      <p>{{ itemIdStatus }}</p>
+    } @else if(itemIdStatus) {
+      <p>erro: {{ itemIdStatus }}</p>
     }
   </div>
 </div>
@@ -33,6 +33,14 @@
     (keydown.enter)="postItem(inputItemTitle.value)"
   >
   <button (click)="postItem(inputItemTitle.value)">Criar</button>
+
+  <div class="result">
+    @if(createdItem) {
+      <p>item criado: {{ createdItem.id }} - {{ createdItem.title }}</p>
+    } @else if(createdItemStatus) {
+      <p>error: {{ createdItemStatus }}</p>
+    }
+  </div>
 </div>
 
 <div class="update-item">
@@ -41,4 +49,12 @@
   <input type="text" #inputUpdateId placeholder="insira o id">
   <input type="text" #inputUpdateTitle placeholder="insira o novo titulo">
   <button (click)="updateItem(inputUpdateId.value, inputUpdateTitle.value)">Atualizar</button>
+
+  <div class="result">
+    @if(updatedItem) {
+      <p>Item atualizado: {{updatedItem.id}} - {{updatedItem.title}}</p>
+    } @else if(updatedItemStatus) {
+      <p>error: {{ updatedItemStatus }}</p>
+    }
+  </div>
 </div>
